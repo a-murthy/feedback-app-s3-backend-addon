@@ -40,11 +40,16 @@ data "tfe_outputs" "core" {
 }
 
 # ==============================================================================
-# NEW SECURE DURABLE STORAGE LAYER (S3 DELTA)
+# NEW SECURE DURABLE STORAGE LAYER (S3 DELTA WITH USER-DEFINED TAGS)
 # ==============================================================================
 resource "aws_s3_bucket" "archive_store" {
   bucket        = "${local.resolved_app_name}-storage-archive-${local.bucket_suffix}"
   force_destroy = true
+
+  tags = {
+    Environment = "Sandbox"
+    Application = local.resolved_app_name
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "secure_block" {
